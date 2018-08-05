@@ -7,12 +7,12 @@ class Settings():
         # Screen Settings
         self.screen_width = 1200
         self.screen_height = 700
-        self.bg_colour = (230, 230, 230)
+        self.bg_colour = (200, 200, 200)
 
 
         # Bullet settings
-        self.bullet_speed_factor = 100
-        self.bullet_width = 200
+        self.bullet_speed_factor = 80
+        self.bullet_width = 20
         self.bullet_height = 30
         self.bullet_colour = 50,60,60
         self.bullets_allowed = 100
@@ -28,7 +28,11 @@ class Settings():
         self.fleet_direction = 1
 
         # How quickly the game speeds up
-        self.speed_up_scale = 1.5
+        self.speed_up_scale = 1.1
+
+        # how quickly points value increases
+        self.score_scale = 1.5
+
 
         self.initialize_dynamic_settings()
 
@@ -40,11 +44,16 @@ class Settings():
 
         self.fleet_direction = 1
 
+        # Scoring
+        self.alien_points = 50
+
     def increase_speed(self):
         '''Increase speed settings'''
         self.ship_speed_factor *= self.speed_up_scale
         self.bullet_speed_factor *= self.speed_up_scale
         self.alien_speed_factor *= self.speed_up_scale
+
+        self.alien_points = int(self.alien_points * self.score_scale)
 
 
 
