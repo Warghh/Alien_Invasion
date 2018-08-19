@@ -43,7 +43,7 @@ def check_keyup_events(event,ship):
         print('Down - released       Button  UN - Pressed')
         ship.moving_down = False
 
-def check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets):
+def check_events(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets):
     # Respond to keypresses and mouse events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -54,15 +54,21 @@ def check_events(ai_settings, screen, stats, play_button, ship, aliens, bullets)
             check_keyup_events(event, ship)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y)
+            check_play_button(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets, mouse_x, mouse_y)
 
-def check_play_button(ai_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y):
+def check_play_button(ai_settings, screen, stats, sb, play_button, ship, aliens, bullets, mouse_x, mouse_y):
     '''Start a new game if clicked'''
     button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_clicked and not stats.game_active:
 
         #reset game stats
         ai_settings.initialize_dynamic_settings()
+
+        # reset the scoreboard images
+        sb.prep_score()
+        sb.prep_high_score()
+        sb.prep_level()
+        sb.prep_ships()
 
         #hide mouse curser
         pygame.mouse.set_visible(False)
@@ -123,6 +129,10 @@ def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
         # Speed up game
         ai_settings.increase_speed()
         create_fleet(ai_settings, screen, ship, aliens)
+
+        # Increase level
+        stats.level +=1
+        sb.prep_level()
 
 def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets):
 
@@ -193,7 +203,7 @@ def change_fleet_direction(ai_settings, aliens):
     ai_settings.fleet_direction *= -1
 
 
-def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
+def ship_hit(ai_settings, stats, screen, sb, ship, aliens, bullets):
     '''Respond to ship being hit by Alien'''
     # Decrement ships left
     if stats.ships_left > 0:
@@ -208,6 +218,9 @@ def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
         create_fleet(ai_settings, screen, ship, aliens)
         ship.center_ship()
 
+        #Update Scoreboard
+        sb.prep_ships()
+
         # pause
         sleep(0.5)
 
@@ -215,17 +228,17 @@ def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
         stats.game_active = False
         pygame.mouse.set_visible(True)
 
-def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
+def check_aliens_bottom(ai_settings, stats, screen, sb, ship, aliens, bullets):
     '''Check if any aliens have hit the bottom of the screen'''
     screen_rect = screen.get_rect()
     for alien in aliens.sprites():
         if alien.rect.bottom >= screen_rect.bottom:
             # Same as if a ship had been hit
-            ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+            ship_hit(ai_settings, stats, screen, sb, ship, aliens, bullets)
             break
 
 
-def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
+def update_aliens(ai_settings, stats, screen, sb, ship, aliens, bullets):
 
     '''check if aliens at edge'''
     check_fleet_edges(ai_settings, aliens)
@@ -234,10 +247,10 @@ def update_aliens(ai_settings, stats, screen, ship, aliens, bullets):
 
     #Look for alien ship collisions
     if pygame.sprite.spritecollideany(ship, aliens):
-        ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+        ship_hit(ai_settings, stats, screen, sb, ship, aliens, bullets)
 
     # Look for aliens hitting the bottom of the screen
-    check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets)
+    check_aliens_bottom(ai_settings, stats, screen, sb, ship, aliens, bullets)
 
 def check_high_scores(stats, sb):
     if stats.score > stats.high_score:
