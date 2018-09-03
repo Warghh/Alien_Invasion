@@ -12,7 +12,7 @@ class Settings():
 
         # Bullet settings
         self.bullet_speed_factor = 80
-        self.bullet_width = 20
+        self.bullet_width = 50
         self.bullet_height = 30
         self.bullet_colour = 50,60,60
         self.bullets_allowed = 100
@@ -38,7 +38,7 @@ class Settings():
 
     def initialize_dynamic_settings(self):
         '''Initialise dynamic game settings for settings that will change during the game'''
-        self.ship_speed_factor = 10
+        self.ship_speed_factor = 30
         self.bullet_speed_factor = 50
         self.alien_speed_factor = 5
 
