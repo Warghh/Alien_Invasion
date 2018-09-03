@@ -12,11 +12,11 @@ class Settings():
 
         # Bullet settings
         self.bullet_speed_factor = 80
-<<<<<<< HEAD
+
         self.bullet_width = 100
-=======
+
         self.bullet_width = 50
->>>>>>> V1_Game
+
         self.bullet_height = 30
         self.bullet_colour = 50,60,60
         self.bullets_allowed = 100
