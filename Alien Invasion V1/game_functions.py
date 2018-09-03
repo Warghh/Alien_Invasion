@@ -4,7 +4,7 @@ from bullet import Bullet
 from alien import Alien
 from time import sleep
 
-def check_keydown_events(event, settings, screen, ship, bullets):
+def check_keydown_events(event, ai_settings, screen, ship, bullets):
     # Respond to keypresses
     if event.key == pygame.K_RIGHT:
         # Move the ship to the right
