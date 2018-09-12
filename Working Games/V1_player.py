@@ -13,7 +13,7 @@ class Player(Sprite):
         self.settings = settings
 
         # Load the ship image and get its rect
-        self.image = pygame.image.load('images/ship.bmp')
+        self.image = pygame.image.load('images/Ship_2.bmp')
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
@@ -43,16 +43,11 @@ class Player(Sprite):
         # edited - Update the ships center value not the rect
         if self.moving_right and self.rect.right < self.screen_rect.right:
             self.center_x += self.settings.player_speed_factor
-            print(self.center_x)
         if self.moving_left and self.rect.left > 0:
             self.center_x -= self.settings.player_speed_factor
-
-        if self.moving_up:
-            # and self.rect.top < self.screen_rect.top:
+        if self.moving_up and self.rect.top > 20:
             self.center_y -= self.settings.player_speed_factor
-            print(self.center_y)
-        if self.moving_down:
-            # and self.rect.bottom > 0:
+        if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
             self.center_y += self.settings.player_speed_factor
 
         # Update Rect object from self.center
